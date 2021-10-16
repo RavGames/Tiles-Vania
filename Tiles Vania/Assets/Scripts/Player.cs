@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] float runSpeed = 5f;
     [SerializeField] float jumpSpeed = 3f;
     [SerializeField] float climbSpeed = 5f;
+    [SerializeField] Vector2 deathKick = new Vector2(1f, 25f);
     float gravityRigidbody2d;
 
     //state
@@ -19,7 +20,8 @@ public class Player : MonoBehaviour
     //components
     private Rigidbody2D rigidbody2d;
     private Animator animator;
-    private Collider2D collider2D;
+    private CapsuleCollider2D bodyCollider2d;
+    private BoxCollider2D myFeet;
 
     //msg then methods
     private void Start()
@@ -27,16 +29,20 @@ public class Player : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         
-        collider2D = GetComponent<Collider2D>();
+        bodyCollider2d = GetComponent<CapsuleCollider2D>();
+        myFeet = GetComponent<BoxCollider2D>();
         gravityRigidbody2d = rigidbody2d.gravityScale;
     }
 
     private void Update()
     {
+
+        if (!isAlive) { return; }
         Run();
         ClimbLadder();
         Jump();
         FlipSprite();
+        Die();
     }
 
     private void Run()
@@ -53,7 +59,7 @@ public class Player : MonoBehaviour
     
     private void ClimbLadder()
     {
-        if (!collider2D.IsTouchingLayers(LayerMask.GetMask("Climbing")))
+        if (!myFeet.IsTouchingLayers(LayerMask.GetMask("Climbing")))
         {
             animator.SetBool("climbing", false);
             rigidbody2d.gravityScale = gravityRigidbody2d;
@@ -69,13 +75,15 @@ public class Player : MonoBehaviour
         animator.SetBool("climbing", playerHasVertivalMovement);
     }
 
+   
+
     private void Jump()
     {
        
 
         if(CrossPlatformInputManager.GetButtonDown("Jump"))
         {
-            if(collider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
+            if(myFeet.IsTouchingLayers(LayerMask.GetMask("Ground")))
             {
                 Vector2 jumpVelocity = new Vector2(0f, jumpSpeed);
                 rigidbody2d.velocity = jumpVelocity;
@@ -97,7 +105,19 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+
+
+    private void Die()
+    {
+        if (bodyCollider2d.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
+        {
+            isAlive = false;
+            animator.SetTrigger("Die");
+            rigidbody2d.velocity = deathKick;
+        }
+    }
+
+
 
 
 }//CLASS

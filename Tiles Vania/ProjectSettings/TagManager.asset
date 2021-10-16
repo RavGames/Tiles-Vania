@@ -17,9 +17,9 @@ TagManager:
   - Climbing
   - Player
   - Background
-  - 
-  - 
-  - 
+  - Enemy
+  - Hazards
+  - ExitPortals
   - 
   - 
   - 
@@ -47,9 +47,18 @@ TagManager:
   - name: Climbing
     uniqueID: 450493399
     locked: 0
+  - name: Enemy
+    uniqueID: 2845366121
+    locked: 0
+  - name: Hazards
+    uniqueID: 3599529157
+    locked: 0
   - name: Player
     uniqueID: 3220376615
     locked: 0
   - name: ForeGround
     uniqueID: 1010310531
+    locked: 0
+  - name: ExitPortals
+    uniqueID: 2119805519
     locked: 0
