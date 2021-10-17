@@ -20,7 +20,7 @@ TagManager:
   - Enemy
   - Hazards
   - ExitPortals
-  - 
+  - PickUps
   - 
   - 
   - 
@@ -61,4 +61,7 @@ TagManager:
     locked: 0
   - name: ExitPortals
     uniqueID: 2119805519
+    locked: 0
+  - name: PickUps
+    uniqueID: 2329878285
     locked: 0
